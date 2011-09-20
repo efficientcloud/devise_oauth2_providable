@@ -14,9 +14,9 @@ module ExpirableToken
       validates :token, :presence => true, :uniqueness => true
 
       # TODO: this should be a default scope once rails default_scope supports lambda's
-      scope :valid, lambda {
-        where(self.arel_table[:expires_at].gteq(Time.now.utc))
-      }
+      #scope :valid, lambda {
+      #  where(self.arel_table[:expires_at].gteq(Time.now.utc))       # depends on activerecord
+      #}
     end
   end
 
@@ -27,6 +27,10 @@ module ExpirableToken
   def expired!
     self.expires_at = Time.now.utc
     self.save!
+  end
+
+  def expired?
+    self.expires_at <= Time.now.utc
   end
 
   private
