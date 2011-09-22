@@ -24,7 +24,7 @@ describe AccessToken do
     before do
       @soon = 1.minute.from_now
       client = Client.create! :name => 'test', :redirect_uri => 'http://localhost:3000', :website => 'http://localhost'
-      @refresh_token = client.refresh_tokens.create!
+      @refresh_token = RefreshToken.create!(:client => client)
       @refresh_token.expires_at = @soon
       @access_token = AccessToken.create! :client => client, :refresh_token => @refresh_token
     end

@@ -7,7 +7,7 @@ describe Devise::Strategies::Oauth2RefreshTokenGrantTypeStrategy do
         before do
           @user = User.create! :email => 'ryan@socialcast.com', :name => 'ryan sonnek', :password => 'test'
           @client = Client.create! :name => 'example', :redirect_uri => 'http://localhost', :website => 'http://localhost'
-          @refresh_token = @client.refresh_tokens.create! :user => @user
+          @refresh_token = RefreshToken.create!(:client => @client, :user => @user)
           params = {
             :grant_type => 'refresh_token',
             :client_id => @client.identifier,
@@ -35,7 +35,7 @@ describe Devise::Strategies::Oauth2RefreshTokenGrantTypeStrategy do
         before do
           @user = User.create! :email => 'ryan@socialcast.com', :name => 'ryan sonnek', :password => 'test'
           @client = Client.create! :name => 'example', :redirect_uri => 'http://localhost', :website => 'http://localhost'
-          @refresh_token = @client.refresh_tokens.create! :user => @user
+          @refresh_token = RefreshToken.create!(:client => @client, :user => @user)
           params = {
             :grant_type => 'refresh_token',
             :client_id => @client.identifier,

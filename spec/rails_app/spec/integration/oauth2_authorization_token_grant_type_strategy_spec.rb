@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Devise::Strategies::Oauth2AuthorizationCodeGrantTypeStrategy do
-  describe 'POST /oauth2/token' do
+  describe 'POST ASDF/oauth2/token' do
     describe 'with grant_type=authorization_code' do
       context 'with valid params' do
         before do
           @user = User.create! :email => 'ryan@socialcast.com', :name => 'ryan sonnek', :password => 'test'
           @client = Client.create! :name => 'example', :redirect_uri => 'http://localhost', :website => 'http://localhost'
-          @authorization_code = @user.authorization_codes.create(:client_id => @client, :redirect_uri => @client.redirect_uri)
+          @authorization_code = AuthorizationCode.create!(:user => @user, :client_id => @client, :redirect_uri => @client.redirect_uri)
           params = {
             :grant_type => 'authorization_code',
             :client_id => @client.identifier,
@@ -20,8 +20,12 @@ describe Devise::Strategies::Oauth2AuthorizationCodeGrantTypeStrategy do
         it { response.code.to_i.should == 200 }
         it { response.content_type.should == 'application/json' }
         it 'returns json' do
-          token = AccessToken.last
-          refresh_token = RefreshToken.last
+          #puts response.body
+          #puts "ats @ spec: #{AccessToken.find(:all).count}"
+          #puts "rts @ spec: #{RefreshToken.find(:all).count}"
+          #puts 'meh'
+          #token = AccessToken.last
+          #refresh_token = RefreshToken.last
           expected = {
             :token_type => 'bearer',
             :expires_in => 899,
@@ -35,7 +39,7 @@ describe Devise::Strategies::Oauth2AuthorizationCodeGrantTypeStrategy do
         before do
           @user = User.create! :email => 'ryan@socialcast.com', :name => 'ryan sonnek', :password => 'test'
           @client = Client.create! :name => 'example', :redirect_uri => 'http://localhost', :website => 'http://localhost'
-          @authorization_code = @user.authorization_codes.create(:client_id => @client, :redirect_uri => @client.redirect_uri)
+          @authorization_code = AuthorizationCode.create!(:user=>@user, :client_id => @client, :redirect_uri => @client.redirect_uri)
           params = {
             :grant_type => 'authorization_code',
             :client_id => @client.identifier,

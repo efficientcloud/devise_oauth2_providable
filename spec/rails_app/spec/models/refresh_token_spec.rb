@@ -12,7 +12,6 @@ describe RefreshToken do
     it { should belong_to :client }
     it { should validate_presence_of :client }
     it { should validate_presence_of :expires_at }
-    it { should have_many :access_tokens }
     it { should have_db_index :client_id }
     it { should have_db_index :user_id }
     it { should have_db_index(:token).unique(true) }
