@@ -9,7 +9,7 @@ module Devise
       end
       def authenticate!
         @req.setup!
-        token = AccessToken.find_by_token(@req.access_token)
+        token = AccessToken.to_adapter.find_first(:token =>@req.access_token)
         token = (token and not token.expired?) ? token : nil
         env['oauth2.client'] = token ? token.client : nil
         resource = token ? token.user : nil

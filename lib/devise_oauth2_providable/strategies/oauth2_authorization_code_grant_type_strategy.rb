@@ -8,7 +8,7 @@ module Devise
       end
 
       def authenticate!
-        if client && code = AuthorizationCode.find_by_token(params[:code]) and code and (not code.expired?)
+        if client && code = AuthorizationCode.to_adapter.find_first(:token => params[:code]) and code and (not code.expired?)
           success! code.user
         elsif !halted?
           oauth_error! :invalid_grant, 'invalid authorization code request'
