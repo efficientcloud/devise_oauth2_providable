@@ -39,10 +39,7 @@ class Oauth2::AuthorizationsController < ApplicationController
             res.code = authorization_code.token
           when :token
             access_token = AccessToken.to_adapter.create!(:user => current_user, :client_id => @client)
-            $logger.error access_token.errors
             access_token.save!
-            $logger.error access_token.errors
-            $logger.error access_token.id
             access_token = access_token.token
             bearer_token = Rack::OAuth2::AccessToken::Bearer.new(:access_token => access_token)
             res.access_token = bearer_token
