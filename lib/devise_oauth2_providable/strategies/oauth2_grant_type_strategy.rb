@@ -14,6 +14,9 @@ module Devise
       def client
         @client ||= Client.to_adapter.find_first(:identifier => params[:client_id])
         env['oauth2.client'] = @client
+        if not @client
+          oauth_error! :invalid_client, "we don't know the client you are using. sorry!"
+        end
         @client
       end
       # return custom error response in accordance with the oauth spec
